@@ -5,6 +5,8 @@ use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
 use app\core\Response;
+use app\locales\English;
+use app\locales\Polish;
 use app\models\ContactForm;
 use app\models\RefClick;
 use app\models\User;
@@ -14,9 +16,7 @@ class SiteController extends Controller
     public function home()
     {
         $params = [
-            'name' => "TheCodeholicx",
-            'referralCode' => "nie ma",
-            'test' => 'test'
+            'languageTest' => English::translate('Language')
         ];
 
         if (Application::$app->user){
