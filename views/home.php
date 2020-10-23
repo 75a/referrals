@@ -1,0 +1,1 @@
+<h2>It's the home page</h2>
