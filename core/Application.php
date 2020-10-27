@@ -11,6 +11,8 @@ class Application
 
     public string $layout = 'main';
     public string $userClass;
+    public Language $language;
+
     public Router $router;
     public Request $request;
     public Response $response;
@@ -18,6 +20,7 @@ class Application
     public Database $db;
     public ?UserModel $user;
     public View $view;
+
 
     public static Application $app;
     public ?Controller $controller = null;
@@ -78,13 +81,13 @@ class Application
         $this->controller = $controller;
     }
 
-    public function login(UserModel $user): void
+    public function login(UserModel $user)
     {
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
         $this->session->set('user', $primaryValue);
-
+        return true;
 
     }
 
@@ -98,4 +101,10 @@ class Application
     {
         return !self::$app->user;
     }
+
+    public function getText(string $key): string
+    {
+        return $this->language::translate($key);
+    }
+
 }
