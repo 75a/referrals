@@ -15,6 +15,7 @@ class User extends UserModel
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 2;
 
+
     public int $id;
     public string $firstname = '';
     public string $lastname = '';
@@ -24,6 +25,7 @@ class User extends UserModel
     public string $confirmPassword = '';
     public string $referralCode = '';
     public int $points = 0;
+    public string $verifyCode;
 
     public function tableName(): string
     {
@@ -40,6 +42,7 @@ class User extends UserModel
         $this->status = self::STATUS_INACTIVE;
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         $this->setReferralCode();
+        $this->setVerificationCode();
         return parent::save();
     }
 
@@ -59,7 +62,7 @@ class User extends UserModel
 
     public function attributes(): array
     {
-        return ['firstname', 'lastname', 'email', 'password', 'status', 'referralCode', 'points'];
+        return ['firstname', 'lastname', 'email', 'password', 'status', 'referralCode', 'points', 'verifyCode'];
     }
 
     public function labels(): array
@@ -85,6 +88,11 @@ class User extends UserModel
         return true;
     }
 
+    public function setVerificationCode()
+    {
+        $this->verifyCode = Utils::getRandomString(22);
+    }
+
     public function getReferralCode(): string
     {
         return $this->referralCode;
@@ -96,5 +104,19 @@ class User extends UserModel
         parent::updateColumn('points');
     }
 
+    public function verify()
+    {
+        if ($this->status === self::STATUS_INACTIVE) {
+            $this->status = self::STATUS_ACTIVE;
+            parent::updateColumn('status');
+        } else {
+            echo "Nah";
+        }
+    }
+
+    public function isVerified(): bool
+    {
+        return ($this->status === self::STATUS_ACTIVE);
+    }
 
 }

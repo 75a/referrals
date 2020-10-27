@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\Mailer;
 use app\core\middlewares\LoggedInMiddleware;
 use app\core\middlewares\GuestMiddleware;
 use app\core\Request;
@@ -52,6 +53,13 @@ class AuthController extends Controller
 
             if ($user->validate() && $user->save()){
                 $user->loadId();
+
+                $mailer = new Mailer();
+                $mailer->sendEmail(
+                    $user->email,
+                    "Confirm your registration",
+                    "Here's your verification code: {$user->verifyCode}"
+                ); // TEST!
 
                 Application::$app->login($user);
                 Application::$app->session->setFlash(

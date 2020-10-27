@@ -10,6 +10,10 @@ class English extends Language
 
     public static function getTexts(): array
     {
-        return [];
+        return [
+            "Status 0" => "Inactive",
+            "Status 1" => "Active",
+
+        ];
     }
 }

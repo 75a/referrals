@@ -60,6 +60,11 @@ class Polish extends Language
             "You have been logged out" => "Zostałeś wylogowany",
             "You will get a point for every click on your dedicated referral link." => "Otrzymasz punkt za każde kliknięcie na twój dedykowany link.",
             "Your link is presented below" => "Twój link jest zaprezentowany poniżej",
+            "Account status" => "Status konta",
+            "Status 0" => "Nieaktywne",
+            "Status 1" => "Aktywne",
+            "Please click on the confirmation link we've sent you to your e-mail" => "Prosimy o kliknięcie w link potwierdzający który wysłaliśmy na twój adres e-mail",
+            "Your account has been activated!" => "Twoje konto zostało aktywowane!",
 
          ];
     }

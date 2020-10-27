@@ -72,6 +72,12 @@ $texts = Application::$app->language->getTexts();
                     </p>
                 </div>
             <?php endif; ?>
+
+            <?php if (!Application::isGuest() && !Application::$app->user->isVerified()): ?>
+                <strong><?=Application::$app->getText("Please click on the confirmation link we've sent you to your e-mail")?></strong>
+            <?php endif; ?>
+
+
         </div>
     </header>
     <main>

@@ -84,11 +84,7 @@ class SiteController extends Controller
     {
         $app = Application::$app;
         $params = [
-            'translate' => [
-                'Welcome' => $app->getText('Welcome'),
-            ],
-            'userName' => Application::$app->user->getDisplayName(),
-            'title' => 'xd'
+            'userName' => Application::$app->user->getDisplayName()
         ];
         return $this->render('userHome', $params);
     }
