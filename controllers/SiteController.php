@@ -3,6 +3,7 @@
 namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
+use app\core\middlewares\LoggedInMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\locales\English;
@@ -13,17 +14,18 @@ use app\models\User;
 
 class SiteController extends Controller
 {
+    public function __construct()
+    {
+        $this->registerMiddleware(new LoggedInMiddleware(['contact']));
+    }
+
     public function home()
     {
-        $params = [
-            'languageTest' => English::translate('Language')
-        ];
-
         if (Application::$app->user){
-            $params['referralCode'] = Application::$app->user->getReferralCode();
+            return $this->homeForRegistered();
+        } else {
+            return $this->homeForGuest();
         }
-
-        return $this->render('home', $params);
     }
 
     public function refclick()
@@ -34,14 +36,14 @@ class SiteController extends Controller
             $newRef->setReferralCode($this->getReferralCode());
             $newRef->save();
             if ($newRef->isSaved()){
-                Application::$app->session->setFlash('success','Someone just got points');
+                Application::$app->session->setFlash('success',Application::$app->getText('Someone just got points'));
             } else {
-                Application::$app->session->setFlash('success','This referral link has already been used');
+                Application::$app->session->setFlash('success',Application::$app->getText('This referral link has already been used'));
             }
 
             return Application::$app->response->redirect('/');
         } else {
-            Application::$app->session->setFlash('success','This referral link is invalid');
+            Application::$app->session->setFlash('success',Application::$app->getText('This referral link is invalid'));
             return Application::$app->response->redirect('/');
         }
 
@@ -53,7 +55,7 @@ class SiteController extends Controller
         if ($request->isPost()) {
             $contact->loadData($request->getBody());
             if ($contact->validate() && $contact->send()) {
-                Application::$app->session->setFlash('success','Thanks for contacting us.');
+                Application::$app->session->setFlash('success',Application::$app->getText('Thanks for contacting us.'));
                 return $response->redirect('/contact');
             }
         }
@@ -76,6 +78,25 @@ class SiteController extends Controller
     {
         return Application::$app->request->getBody()['code'];
 
+    }
+
+    private function homeForRegistered()
+    {
+        $app = Application::$app;
+        $params = [
+            'translate' => [
+                'Welcome' => $app->getText('Welcome'),
+            ],
+            'userName' => Application::$app->user->getDisplayName(),
+            'title' => 'xd'
+        ];
+        return $this->render('userHome', $params);
+    }
+
+    private function homeForGuest()
+    {
+
+        return $this->render('guestHome');
     }
 
 }

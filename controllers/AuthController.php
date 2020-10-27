@@ -18,7 +18,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->registerMiddleware(new LoggedInMiddleware(['profile']));
+        $this->registerMiddleware(new LoggedInMiddleware(['profile', 'logout']));
         $this->registerMiddleware(new GuestMiddleware(['register', 'login']));
     }
 
@@ -28,6 +28,10 @@ class AuthController extends Controller
         if ($request->isPost()){
             $loginForm->loadData($request->getBody());
             if ($loginForm->validate() && $loginForm->login()){
+                Application::$app->session->setFlash(
+                    'success',
+                    Application::$app->getText('Logged in successfully!')
+                );
                 $response->redirect('/');
                 return;
             }
@@ -41,26 +45,25 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-
         $user = new User();
         if ($request->isPost()){
 
            $user->loadData($request->getBody());
 
+            if ($user->validate() && $user->save()){
+                $user->loadId();
 
-            if ($user->validate() && $user->setReferralCode() && $user->save()){
+                Application::$app->login($user);
                 Application::$app->session->setFlash(
                     'success',
-                    'Thanks for registering'
+                    Application::$app->getText('Thanks for registering')
                 );
                 Application::$app->response->redirect('/');
-                exit;
+                return;
             }
 
-
-
             return $this->render('register', [
-                    'model' => $user
+                'model' => $user
             ]);
         }
         $this->setLayout('main');
@@ -69,10 +72,13 @@ class AuthController extends Controller
         ]);
     }
 
-
     public function logout (Request $request, Response $response)
     {
         Application::$app->logout();
+        Application::$app->session->setFlash(
+            'success',
+            Application::$app->getText('You have been logged out')
+        );
         $response->redirect('/');
     }
 
