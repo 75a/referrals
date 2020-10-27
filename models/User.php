@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\db\DbModel;
 
 use app\core\Model;
@@ -33,11 +34,12 @@ class User extends UserModel
         return 'id';
     }
 
-    public function save(): void
+    public function save()
     {
         $this->status = self::STATUS_INACTIVE;
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        parent::save();
+        $this->setReferralCode();
+        return parent::save();
     }
 
     public function rules(): array
@@ -61,11 +63,11 @@ class User extends UserModel
     public function labels(): array
     {
         return [
-            'firstname' => 'First name',
-            'lastname' => 'Last name',
-            'email' => 'E-mail',
-            'password' => 'Password',
-            'confirmPassword' => 'Repeat password'
+            'firstname' => Application::$app->getText("First name"),
+            'lastname' => Application::$app->getText("Last name"),
+            'email' => Application::$app->getText("E-mail"),
+            'password' => Application::$app->getText("Password"),
+            'confirmPassword' => Application::$app->getText("Repeat password")
         ];
     }
 
@@ -92,5 +94,8 @@ class User extends UserModel
             "refowner" => $this->id
         ]);
     }
+
+
+
 
 }

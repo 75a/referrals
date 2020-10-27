@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\Model;
 
 class ContactForm extends Model
@@ -22,9 +23,9 @@ class ContactForm extends Model
     public function labels(): array
     {
         return [
-            'subject' => 'Enter your subject',
-            'email' => 'Your email',
-            'body' => 'Body',
+            'subject' => Application::$app->getText("Enter your subject"),
+            'email' => Application::$app->getText("Your email"),
+            'body' => Application::$app->getText("Body"),
         ];
     }
 
