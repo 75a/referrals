@@ -30,6 +30,21 @@ abstract class DbModel extends Model
         return true;
     }
 
+    public function updateColumn(string $columnName)
+    {
+        $tableName = $this->tableName();
+
+        $pkName = $this->primaryKey();
+        $pkValue = $this->{$this->primaryKey()};
+
+        $updatedValue = $this->{$columnName};
+        $statement = self::prepare("UPDATE $tableName SET $columnName ='$updatedValue' WHERE $pkName = $pkValue;");
+
+        $statement->execute();
+
+        return true;
+    }
+
     public function findOne($where)
     {
         $tableName = static::tableName();
