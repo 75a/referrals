@@ -13,11 +13,9 @@ abstract class Language
 
     public static function translate(string $key): string
     {
-        $textToReturn = "";
+        $textToReturn = $key;
         $allTexts = static::getTexts();
-        $isKey = array_key_exists($key, $allTexts);
-
-        if ($isKey) {
+        if (array_key_exists($key, $allTexts)) {
             $textToReturn = $allTexts[$key];
         }
         return $textToReturn;
