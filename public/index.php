@@ -3,6 +3,9 @@ use app\controllers\SiteController;
 use app\controllers\AuthController;
 use app\core\Application;
 use app\Config;
+use app\locales\English;
+use app\locales\Polish;
+
 
 require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
@@ -11,6 +14,8 @@ $dotenv->load();
 $config = Config::getConfig();
 
 $app = new Application(dirname(__DIR__), $config);
+
+$app->language = new Polish();
 
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/r', [SiteController::class, 'refclick']);
