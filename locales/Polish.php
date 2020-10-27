@@ -57,7 +57,9 @@ class Polish extends Language
             "Thanks for contacting us." => "Dziękujemy za skontaktowanie się z nami",
             "Thanks for registering" => "Dziękujemy za rejestracje",
             "Logged in successfully!" => "Zalogowano pomyślnie!",
-            "You have been logged out" => "Zostałeś wylogowany"
+            "You have been logged out" => "Zostałeś wylogowany",
+            "You will get a point for every click on your dedicated referral link." => "Otrzymasz punkt za każde kliknięcie na twój dedykowany link.",
+            "Your link is presented below" => "Twój link jest zaprezentowany poniżej",
 
          ];
     }
