@@ -11,6 +11,7 @@ class RefClick extends DbModel
 {
     public const REF_LENGTH = 8;
 
+    public User $refUser;
     public int $refowner;
     public string $ipofclicker;
     public bool $isSaved = false;
@@ -25,7 +26,7 @@ class RefClick extends DbModel
         return (ctype_alnum($potentialReferralCode) && (strlen($potentialReferralCode) == self::REF_LENGTH));
     }
 
-    public function save(): void
+    public function save()
     {
         if ($this->refowner && $this->ipofclicker) {
 
@@ -35,10 +36,10 @@ class RefClick extends DbModel
             ]);
             if (!$existingClick){
                 $this->isSaved = true;
-                parent::save();
+                $this->refUser->addPoints(1);
+
+                return parent::save();
             }
-
-
         }
     }
 
@@ -74,6 +75,7 @@ class RefClick extends DbModel
     {
         $user = User::findOne(['referralCode' => $referralCode]);
         if ($user){
+            $this->refUser = $user;
             $this->refowner = $user->id;
         }
     }

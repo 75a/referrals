@@ -23,6 +23,7 @@ class User extends UserModel
     public string $password = '';
     public string $confirmPassword = '';
     public string $referralCode = '';
+    public int $points = 0;
 
     public function tableName(): string
     {
@@ -42,6 +43,7 @@ class User extends UserModel
         return parent::save();
     }
 
+
     public function rules(): array
     {
         return [
@@ -57,7 +59,7 @@ class User extends UserModel
 
     public function attributes(): array
     {
-        return ['firstname', 'lastname', 'email', 'password', 'status', 'referralCode'];
+        return ['firstname', 'lastname', 'email', 'password', 'status', 'referralCode', 'points'];
     }
 
     public function labels(): array
@@ -88,14 +90,11 @@ class User extends UserModel
         return $this->referralCode;
     }
 
-    public function getPointsCount(): int
+    public function addPoints(int $points)
     {
-        return DbModel::count("refclick",[
-            "refowner" => $this->id
-        ]);
+        $this->points += $points;
+        parent::updateColumn('points');
     }
-
-
 
 
 }

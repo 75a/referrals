@@ -89,7 +89,7 @@ class AuthController extends Controller
             'email' => $user->email,
             'fullname' => $user->getDisplayName(),
             'reflink' => $user->referralCode,
-            'points' => $user->getPointsCount()
+            'points' => $user->points
         ]);
     }
 
