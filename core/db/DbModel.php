@@ -12,8 +12,8 @@ abstract class DbModel extends Model
     abstract public function tableName(): string;
     abstract public function attributes(): array;
     abstract public function primaryKey(): string;
-
-    public function save(): void
+    public string $lastInsertId;
+    public function save()
     {
         $tableName = $this->tableName();
         $attributes = $this->attributes();
@@ -25,7 +25,9 @@ abstract class DbModel extends Model
            $statement->bindValue(":$attribute", $this->{$attribute});
        }
        $statement->execute();
+       $this->lastInsertId = Application::$app->db->pdo->lastInsertId();
 
+        return true;
     }
 
     public function findOne($where)
@@ -42,6 +44,7 @@ abstract class DbModel extends Model
         $statement->execute();
         return $statement->fetchObject(static::class);
     }
+
 
     public static function count($tableName, $where)
     {
@@ -63,6 +66,9 @@ abstract class DbModel extends Model
         return Application::$app->db->pdo->prepare($sql);
     }
 
-
+    public function loadId(): void
+    {
+        $this->{$this->primaryKey()} = $this->lastInsertId;
+    }
 
 }
