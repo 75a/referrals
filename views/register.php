@@ -2,12 +2,14 @@
 /** @var $model \app\models\User */
 
 use app\core\Application;
+use app\core\CSRFProtector;
 
 ?>
 
 <h1><?=Application::$app->getText("Create an account")?></h1>
 
 <?php $form = \app\core\form\Form::begin('',"post") ?>
+    <?php echo $form->getCSRFField(CSRFProtector::getToken()) ?>
     <?php echo $form->field($model, 'firstname') ?>
     <?php echo $form->field($model, 'lastname') ?>
     <?php echo $form->field($model, 'email') ?>

@@ -52,11 +52,12 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $user = new User();
+        CSRFProtector::setTokenIfNotExist();
         if ($request->isPost()){
-
-           $user->loadData($request->getBody());
-
-            if ($user->validate() && $user->save()){
+            $inputBody = $request->getBody();
+            $user->loadData($inputBody);
+            $userInputCSRF = $inputBody[CSRFProtector::CSRF_KEY];
+            if (($userInputCSRF === CSRFProtector::getToken()) && $user->validate() && $user->save()){
                 $user->loadId();
 
                 $mailer = new Mailer();
@@ -71,8 +72,8 @@ class AuthController extends Controller
                     'success',
                     Application::$app->getText('Thanks for registering')
                 );
-                Application::$app->response->redirect('/');
-                return;
+                CSRFProtector::removeToken();
+                return Application::$app->response->redirect('/');
             }
 
             return $this->render('register', [
