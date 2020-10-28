@@ -79,6 +79,7 @@ class RefClick extends DbModel
             $this->refowner = $user->id;
             return true;
         }
+        return false;
     }
 
     public function setIP(String $ip): void

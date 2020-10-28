@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\CSRFProtector;
+use app\core\exception\ReferralException;
 use app\core\middlewares\LoggedInMiddleware;
 use app\core\Request;
 use app\core\Response;
