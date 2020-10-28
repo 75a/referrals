@@ -14,11 +14,14 @@ class VerificationController extends Controller
             $foundUser = (new User)->findOne(['verifyCode' => $_GET['code']]);
             if ($foundUser) {
                 $foundUser->verify();
-                Application::$app->session->setFlash('success',Application::$app
+                Application::$app->session->setFlash('info',Application::$app
                     ->getText('Your account has been activated!'));
-                Application::$app->response->redirect('/');
+                return Application::$app->response->redirect('/');
             }
         }
+        Application::$app->session->setFlash('info',Application::$app
+            ->getText('This verification link is invalid'));
+        return Application::$app->response->redirect('/');
     }
 
 }
