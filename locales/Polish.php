@@ -65,6 +65,7 @@ class Polish extends Language
             "Status 1" => "Aktywne",
             "Please click on the confirmation link we've sent you to your e-mail" => "Prosimy o kliknięcie w link potwierdzający który wysłaliśmy na twój adres e-mail",
             "Your account has been activated!" => "Twoje konto zostało aktywowane!",
+            "This verification link is invalid" => "Ten link weryfikacyjny jest nieprawidłowy"
 
          ];
     }

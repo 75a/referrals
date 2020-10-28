@@ -30,7 +30,7 @@ class AuthController extends Controller
             $loginForm->loadData($request->getBody());
             if ($loginForm->validate() && $loginForm->login()){
                 Application::$app->session->setFlash(
-                    'success',
+                    'info',
                     Application::$app->getText('Logged in successfully!')
                 );
                 $response->redirect('/');
@@ -84,7 +84,7 @@ class AuthController extends Controller
     {
         Application::$app->logout();
         Application::$app->session->setFlash(
-            'success',
+            'info',
             Application::$app->getText('You have been logged out')
         );
         $response->redirect('/');

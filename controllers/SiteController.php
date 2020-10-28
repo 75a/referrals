@@ -36,14 +36,14 @@ class SiteController extends Controller
             $newRef->setReferralCode($this->getReferralCode());
             $newRef->save();
             if ($newRef->isSaved()){
-                Application::$app->session->setFlash('success',Application::$app->getText('Someone just got points'));
+                Application::$app->session->setFlash('info',Application::$app->getText('Someone just got points'));
             } else {
-                Application::$app->session->setFlash('success',Application::$app->getText('This referral link has already been used'));
+                Application::$app->session->setFlash('info',Application::$app->getText('This referral link has already been used'));
             }
 
             return Application::$app->response->redirect('/');
         } else {
-            Application::$app->session->setFlash('success',Application::$app->getText('This referral link is invalid'));
+            Application::$app->session->setFlash('info',Application::$app->getText('This referral link is invalid'));
             return Application::$app->response->redirect('/');
         }
 
@@ -55,7 +55,7 @@ class SiteController extends Controller
         if ($request->isPost()) {
             $contact->loadData($request->getBody());
             if ($contact->validate() && $contact->send()) {
-                Application::$app->session->setFlash('success',Application::$app->getText('Thanks for contacting us.'));
+                Application::$app->session->setFlash('info',Application::$app->getText('Thanks for contacting us.'));
                 return $response->redirect('/contact');
             }
         }
