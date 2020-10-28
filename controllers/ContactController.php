@@ -28,7 +28,7 @@ class ContactController extends Controller
             $inputBody = $request->getBody();
             $userInputCSRF = $inputBody[CSRFProtector::CSRF_KEY];
             $contact->loadData($inputBody);
-            if ($contact->validate() && $this->sendContactMessage($inputBody) && ($userInputCSRF === CSRFProtector::getToken())) {
+            if (($userInputCSRF === CSRFProtector::getToken()) && $contact->validate() && $this->sendContactMessage($inputBody)) {
                 Application::$app->session->setFlash('info',Application::$app->getText('Thanks for contacting us.'));
                 CSRFProtector::removeToken();
                 return $response->redirect('/');
