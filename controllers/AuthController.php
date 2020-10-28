@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\CSRFProtector;
 use app\core\Mailer;
 use app\core\middlewares\LoggedInMiddleware;
 use app\core\middlewares\GuestMiddleware;
@@ -25,15 +26,20 @@ class AuthController extends Controller
     public function login (Request $request, Response $response)
     {
         $loginForm = new LoginForm();
+        CSRFProtector::setTokenIfNotExist();
         if ($request->isPost()){
-            $loginForm->loadData($request->getBody());
-            if ($loginForm->validate() && $loginForm->login()){
+
+            $inputBody = $request->getBody();
+            $loginForm->loadData($inputBody);
+            $userInputCSRF = $inputBody[CSRFProtector::CSRF_KEY];
+            if (($userInputCSRF === CSRFProtector::getToken()) && $loginForm->validate() && $loginForm->login() ){
                 Application::$app->session->setFlash(
                     'info',
                     Application::$app->getText('Logged in successfully!')
                 );
-                $response->redirect('/');
-                return;
+                CSRFProtector::removeToken();
+                return $response->redirect('/');
+
             }
         }
 
