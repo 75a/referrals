@@ -1,6 +1,7 @@
 <?php
 namespace app\core\form;
 
+use app\core\CSRFProtector;
 use app\core\Model;
 
 class Form
@@ -9,6 +10,11 @@ class Form
     {
         echo sprintf('<form action="%s" method ="%s">', $action, $method);
         return new Form();
+    }
+
+    public function getCSRFField(string $token): string
+    {
+        return sprintf('<input type="hidden" name="%s" value="%s">', CSRFProtector::CSRF_KEY, $token);
     }
 
     public static function end (): void

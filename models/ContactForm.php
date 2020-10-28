@@ -14,9 +14,9 @@ class ContactForm extends Model
     public function rules(): array
     {
         return [
-          'subject' => [self::RULE_REQUIRED],
-          'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-          'body' => [self::RULE_REQUIRED],
+            'subject' => [self::RULE_REQUIRED],
+            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
+            'body' => [self::RULE_REQUIRED],
         ];
     }
 
@@ -27,12 +27,5 @@ class ContactForm extends Model
             'email' => Application::$app->getText("Your email"),
             'body' => Application::$app->getText("Body"),
         ];
-    }
-
-    public function send(): bool
-    {
-
-        // todo
-        return true;
     }
 }

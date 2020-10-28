@@ -3,6 +3,7 @@
 namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
+use app\core\CSRFProtector;
 use app\core\middlewares\LoggedInMiddleware;
 use app\core\Request;
 use app\core\Response;
@@ -52,11 +53,16 @@ class SiteController extends Controller
     public function contact(Request $request, Response $response)
     {
         $contact = new ContactForm();
+        CSRFProtector::setTokenIfNotExist();
+
         if ($request->isPost()) {
-            $contact->loadData($request->getBody());
-            if ($contact->validate() && $contact->send()) {
+            $inputBody = $request->getBody();
+            $userInputCSRF = $inputBody[CSRFProtector::CSRF_KEY];
+            $contact->loadData($inputBody);
+            if ($contact->validate() && $this->sendContactMessage($inputBody) && ($userInputCSRF === CSRFProtector::getToken())) {
                 Application::$app->session->setFlash('info',Application::$app->getText('Thanks for contacting us.'));
-                return $response->redirect('/contact');
+                CSRFProtector::removeToken();
+                return $response->redirect('/');
             }
         }
         return $this->render('contact', [
@@ -80,6 +86,12 @@ class SiteController extends Controller
 
     }
 
+    private function sendContactMessage(array $messageArray): bool
+    {
+        // todo
+        return true;
+    }
+
     private function homeForRegistered()
     {
         $app = Application::$app;
@@ -91,7 +103,6 @@ class SiteController extends Controller
 
     private function homeForGuest()
     {
-
         return $this->render('guestHome');
     }
 

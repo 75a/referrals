@@ -10,6 +10,8 @@ class InputField extends BaseField
     public const TYPE_TEXT = 'text';
     public const TYPE_PASSWORD = 'password';
     public const TYPE_NUMBER = 'number';
+    public const TYPE_HIDDEN = 'hidden';
+
 
     public string $type;
 
@@ -22,6 +24,12 @@ class InputField extends BaseField
     public function passwordField(): BaseField
     {
         $this-> type = self::TYPE_PASSWORD;
+        return $this;
+    }
+
+    public function hiddenField(): BaseField
+    {
+        $this-> type = self::TYPE_HIDDEN;
         return $this;
     }
 
