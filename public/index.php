@@ -1,6 +1,8 @@
 <?php
 
+use app\controllers\ContactController;
 use app\controllers\ProfileController;
+use app\controllers\ReferralController;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
 use app\controllers\VerificationController;
@@ -21,12 +23,12 @@ $app = new Application(dirname(__DIR__), $config);
 $app->language = new Polish();
 
 $app->router->get('/', [SiteController::class, 'home']);
-$app->router->get('/r', [SiteController::class, 'refclick']);
+$app->router->get('/r', [ReferralController::class, 'refclick']);
 $app->router->get('/verify', [VerificationController::class, 'verify']);
 
 
-$app->router->get('/contact', [SiteController::class, 'contact']);
-$app->router->post('/contact', [Sitecontroller::class, 'contact']);
+$app->router->get('/contact', [ContactController::class, 'contact']);
+$app->router->post('/contact', [ContactController::class, 'contact']);
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
