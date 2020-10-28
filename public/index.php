@@ -1,4 +1,6 @@
 <?php
+
+use app\controllers\ProfileController;
 use app\controllers\SiteController;
 use app\controllers\AuthController;
 use app\controllers\VerificationController;
@@ -34,6 +36,6 @@ $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
 
-$app->router->get('/profile', [AuthController::class, 'profile']);
+$app->router->get('/profile', [ProfileController::class, 'profile']);
 
 $app->run();

@@ -11,7 +11,6 @@ use app\core\middlewares\LoggedInMiddleware;
 use app\core\middlewares\GuestMiddleware;
 use app\core\Request;
 use app\core\Response;
-use app\core\Utils;
 use app\models\LoginForm;
 use app\models\User;
 
@@ -19,7 +18,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->registerMiddleware(new LoggedInMiddleware(['profile', 'logout']));
+        $this->registerMiddleware(new LoggedInMiddleware(['logout']));
         $this->registerMiddleware(new GuestMiddleware(['register', 'login']));
     }
 
