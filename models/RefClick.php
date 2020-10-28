@@ -71,12 +71,13 @@ class RefClick extends DbModel
         return 'id';
     }
 
-    public function setReferralCode(String $referralCode): void
+    public function setReferralCode(String $referralCode): bool
     {
         $user = User::findOne(['referralCode' => $referralCode]);
         if ($user){
             $this->refUser = $user;
             $this->refowner = $user->id;
+            return true;
         }
     }
 

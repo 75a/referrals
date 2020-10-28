@@ -20,19 +20,19 @@ class ReferralController extends Controller
         if ($this->isValidRefClick()) {
             $newRef = new RefClick();
             $newRef->setIP($_SERVER['REMOTE_ADDR']);
-            $newRef->setReferralCode($this->getReferralCode());
-            $newRef->save();
-            if ($newRef->isSaved()){
-                Application::$app->session->setFlash('info',Application::$app->getText('Someone just got points'));
-            } else {
-                Application::$app->session->setFlash('info',Application::$app->getText('This referral link has already been used'));
-            }
+            if ($newRef->setReferralCode($this->getReferralCode())){
+                $newRef->save();
+                if ($newRef->isSaved()){
+                    Application::$app->session->setFlash('info',Application::$app->getText('Someone just got points'));
+                } else {
+                    Application::$app->session->setFlash('info',Application::$app->getText('This referral link has already been used'));
+                }
 
-            return Application::$app->response->redirect('/');
-        } else {
-            Application::$app->session->setFlash('info',Application::$app->getText('This referral link is invalid'));
-            return Application::$app->response->redirect('/');
+                return Application::$app->response->redirect('/');
+            }
         }
+        Application::$app->session->setFlash('info',Application::$app->getText('This referral link is invalid'));
+        return Application::$app->response->redirect('/');
 
     }
 
