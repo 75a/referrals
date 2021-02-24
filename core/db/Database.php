@@ -7,6 +7,7 @@ use app\core\Application;
 class Database
 {
     public \PDO $pdo;
+
     public function __construct(array $config)
     {
         $dsn = $config['dsn'] ?? '';
@@ -74,11 +75,9 @@ class Database
         return $this->pdo->prepare($sql);
     }
 
-
     protected function log($message): void
     {
         echo '['.date('Y-m-d H:i:s').'] - '.$message . PHP_EOL;
     }
-
 
 }
