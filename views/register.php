@@ -6,7 +6,7 @@ use app\core\CSRFProtector;
 
 ?>
 
-<h1><?=Application::$app->getText("Create an account")?></h1>
+<h2 class="text-big"><?=Application::$app->getText("Create an account")?></h2>
 
 <?php $form = \app\core\form\Form::begin('',"post") ?>
     <?php echo $form->getCSRFField(CSRFProtector::getToken()) ?>

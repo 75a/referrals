@@ -6,7 +6,7 @@ use app\core\Application;
 use app\core\CSRFProtector;
 use app\core\form\TextareaField;
 ?>
-<h1><?=Application::$app->getText("Contact us")?></h1>
+<h2 class="text-big"><?=Application::$app->getText("Contact us")?></h2>
 <?php $form = \app\core\form\Form::begin('', 'post'); ?>
     <?php echo $form->getCSRFField(CSRFProtector::getToken()) ?>
     <?php echo $form->field($model, 'subject') ?>

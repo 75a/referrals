@@ -7,7 +7,7 @@ use app\core\Application;
 $reflink = Config::getConfig()['reflinkURL'] . $reflink;
 ?>
 
-<h1><?=Application::$app->getText("Profile")?></h1>
+<h2 class="text-big"><?=Application::$app->getText("Profile")?></h2>
 <p><?=Application::$app->getText("Your e-mail")?>: <strong><?= $email ?></strong></p>
 <p><?=Application::$app->getText("Your name")?>: <strong><?= $fullname ?></strong></p>
 <p><?=Application::$app->getText("Your reflink")?>: <strong><a href="<?= $reflink ?>"><?=$reflink?></a></strong></p>

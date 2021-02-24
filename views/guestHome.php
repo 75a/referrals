@@ -3,5 +3,5 @@
 use app\core\Application;
 
 ?>
-<h1><?=Application::$app->getText("Referral Script")?></h1>
+<h2 class="text-big"><?=Application::$app->getText("Referral Script")?></h2>
 <p><?=Application::$app->getText("Please log in!")?></p>

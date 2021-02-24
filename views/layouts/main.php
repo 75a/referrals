@@ -9,83 +9,56 @@ $texts = Application::$app->language->getTexts();
 <head>
     <meta charset="utf-8">
     <title><?= $this->title ?></title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .container {
-            width: 80%;
-            margin: auto;
-        }
-
-        .top-menu li {
-            display: inline;
-            margin: 0 10px 0 10px;
-        }
-
-        .flash {
-            background-color: #51d92b;
-        }
-
-        .main-content {
-            border: 1px solid #000000;
-        }
-
-        header {
-            margin: 50px 0 50px 0;
-        }
-
-        footer {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
+    <header class="pt-15 pb-15 bg-dirtywhite bborder-1-brightgray">
         <div class="container">
             <h1>Referral Script</h1>
             <nav>
-                <ul class="top-menu">
+                <ul class="top-menu mt-8 mb-8">
                     <?php if (Application::isGuest()): ?>
-                        <li><a href="/"><?= $texts['Home'] ?></a></li>
-                        <li><a href="/login"><?= $texts['Login'] ?></a></li>
-                        <li><a href="register"><?= $texts['Register'] ?></a></li>
+                        <li class="mr-15"><a href="/" class="text-dark nav-button"><?= $texts['Home'] ?></a></li>
+                        <li class="mr-15"><a href="/login" class="text-dark nav-button"><?= $texts['Login'] ?></a></li>
+                        <li class="mr-15"><a href="register" class="text-dark nav-button"><?= $texts['Register'] ?></a></li>
                     <?php else: ?>
-                        <li><a href="/"><?= $texts['Home'] ?></a></li>
-                        <li><a href="/profile"><?= $texts['Profile'] ?></a></li>
-                        <li><a href="/contact"><?= $texts['Contact'] ?></a></li>
-                        <li><a href="/logout"><?= $texts['Logout'] ?></a></li>
+                        <li class="mr-15"><a href="/" class="text-dark nav-button"><?= $texts['Home'] ?></a></li>
+                        <li class="mr-15"><a href="/profile" class="text-dark nav-button"><?= $texts['Profile'] ?></a></li>
+                        <li class="mr-15"><a href="/contact" class="text-dark nav-button"><?= $texts['Contact'] ?></a></li>
+                        <li class="mr-15"><a href="/logout" class="text-dark nav-button"><?= $texts['Logout'] ?></a></li>
                     <?php endif; ?>
                 </ul>
+                <p class="text-small">
                 <?php if (Application::isGuest()): ?>
-                    <p><?= $texts['You are not logged in'] ?></p>
+                    <?= $texts['You are not logged in'] ?>
                 <?php else: ?>
-                    <p><?= $texts['You are logged in as'] ?> <?php echo Application::$app->user->getDisplayName() ?></p>
+                    <?= $texts['You are logged in as'] ?> <span class="text-bold"><?php echo Application::$app->user->getDisplayName() ?></span>
                 <?php endif; ?>
+                </p>
             </nav>
             <?php if (Application::$app->session->getFlash('info') !== ""): ?>
-                <div class="flash">
-                    <p><?= $texts["Info"] ?>: <strong><?php echo Application::$app->session->getFlash('info') ?></strong>
+
+                    <p class="flash">
+                        <?= $texts["Info"] ?>: <strong><?php echo Application::$app->session->getFlash('info') ?></strong>
                     </p>
-                </div>
             <?php endif; ?>
 
             <?php if (!Application::isGuest() && !Application::$app->user->isVerified()): ?>
-                <strong><?=Application::$app->getText("Please click on the confirmation link we've sent you to your e-mail")?></strong>
+                <p class="flash"><?=Application::$app->getText("Please click on the confirmation link we've sent you to your e-mail")?></p>
             <?php endif; ?>
 
 
         </div>
     </header>
-    <main>
-        <div class="container main-content">
-            {{content}}
+    <main class="pt-25 pb-25">
+        <div class="container">
+            <div class="main-content">
+                {{content}}
+            </div>
+
         </div>
     </main>
-    <footer>
+    <footer class="main-footer bg-dark text-bright text-bold">
         <div class="container">
             <p><?= $texts["Michal Brzozowski 2020"] ?></p>
         </div>
