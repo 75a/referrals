@@ -28,7 +28,7 @@ class RefClick extends DbModel
     {
         if ($this->refowner && $this->ipofclicker) {
 
-            $existingClick = RefClick::findOne([
+            $existingClick = (new RefClick)->findOne([
                 'refowner' => $this->refowner,
                 'ipofclicker' => $this->ipofclicker
             ]);
@@ -39,6 +39,7 @@ class RefClick extends DbModel
                 return parent::save();
             }
         }
+        return false;
     }
 
     public function isSaved(): bool
