@@ -57,7 +57,10 @@ abstract class DbModel extends Model
         }
 
         $statement->execute();
-        return $statement->fetchObject(static::class);
+        $found = $statement->fetchObject(static::class);
+        if ($found === false) { $found = null; }
+
+        return $found;
     }
 
     public static function prepare($sql): object
