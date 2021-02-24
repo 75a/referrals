@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\core;
-
 
 abstract class Language
 {
@@ -20,8 +18,4 @@ abstract class Language
         }
         return $textToReturn;
     }
-
-
-
-
 }

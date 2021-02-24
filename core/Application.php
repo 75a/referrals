@@ -21,7 +21,6 @@ class Application
     public ?UserModel $user;
     public View $view;
 
-
     public static Application $app;
     public ?Controller $controller = null;
 
@@ -40,7 +39,7 @@ class Application
         $this->db = new Database($config['db']);
 
         $primaryValue = $this->session->get('user');
-        if ($primaryValue){
+        if ($primaryValue !== ""){
             $primaryKey = $this->userClass::primaryKey();
             $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
         } else {
@@ -81,14 +80,13 @@ class Application
         $this->controller = $controller;
     }
 
-    public function login(UserModel $user)
+    public function login(UserModel $user): bool
     {
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
         $this->session->set('user', $primaryValue);
         return true;
-
     }
 
     public function logout(): void

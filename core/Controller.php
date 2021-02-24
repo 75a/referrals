@@ -2,7 +2,6 @@
 
 namespace app\core;
 
-
 use app\core\middlewares\BaseMiddleware;
 
 class Controller
@@ -10,9 +9,8 @@ class Controller
     public string $layout = 'main';
     public string $action = '';
 
-
     /**
-     * @var \app\core\middlewares\BaseMiddleware[]
+     * @var BaseMiddleware[]
      */
     protected array $middlewares = [];
 
@@ -21,7 +19,7 @@ class Controller
         $this->layout = $layout;
     }
 
-    public function render ($view, $params =[])
+    public function render($view, $params=[]): string
     {
         return Application::$app->view->renderView($view, $params);
     }
@@ -35,6 +33,5 @@ class Controller
     {
         return $this->middlewares;
     }
-
 }
 
