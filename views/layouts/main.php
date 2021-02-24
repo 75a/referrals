@@ -66,7 +66,7 @@ $texts = Application::$app->language->getTexts();
                     <p><?= $texts['You are logged in as'] ?> <?php echo Application::$app->user->getDisplayName() ?></p>
                 <?php endif; ?>
             </nav>
-            <?php if (Application::$app->session->getFlash('info')): ?>
+            <?php if (Application::$app->session->getFlash('info') !== ""): ?>
                 <div class="flash">
                     <p><?= $texts["Info"] ?>: <strong><?php echo Application::$app->session->getFlash('info') ?></strong>
                     </p>
