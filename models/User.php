@@ -73,7 +73,7 @@ class User extends UserModel
 
     public function getDisplayName(): string
     {
-        return $this->firstname.' '.$this->lastname;
+        return "User";
     }
 
     public function setReferralCode(): bool
@@ -104,8 +104,6 @@ class User extends UserModel
         if ($this->status === self::STATUS_INACTIVE) {
             $this->status = self::STATUS_ACTIVE;
             parent::updateColumn('status');
-        } else {
-            echo "Nah";
         }
     }
 

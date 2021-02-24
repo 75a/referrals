@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\models;
-
 
 use app\core\db\DbModel;
 use app\core\Utils;
@@ -11,7 +9,7 @@ class RefClick extends DbModel
 {
     public const REF_LENGTH = 8;
 
-    public User $refUser;
+    public DbModel $refUser;
     public int $refowner;
     public string $ipofclicker;
     public bool $isSaved = false;
@@ -26,7 +24,7 @@ class RefClick extends DbModel
         return (ctype_alnum($potentialReferralCode) && (strlen($potentialReferralCode) == self::REF_LENGTH));
     }
 
-    public function save()
+    public function save(): bool
     {
         if ($this->refowner && $this->ipofclicker) {
 
@@ -73,7 +71,7 @@ class RefClick extends DbModel
 
     public function setReferralCode(String $referralCode): bool
     {
-        $user = User::findOne(['referralCode' => $referralCode]);
+        $user = (new User)->findOne(['referralCode' => $referralCode]);
         if ($user){
             $this->refUser = $user;
             $this->refowner = $user->id;
