@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\core\exception;
-
 
 use app\core\Application;
 use Throwable;
