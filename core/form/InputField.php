@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\core\form;
 
 use app\core\Model;
