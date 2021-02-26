@@ -7,7 +7,6 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\CSRFProtector;
-use app\core\Mailer;
 use app\core\middlewares\LoggedInMiddleware;
 use app\core\middlewares\GuestMiddleware;
 use app\core\Request;
