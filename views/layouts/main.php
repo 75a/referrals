@@ -17,14 +17,12 @@ $texts = Application::$app->language->getTexts();
             <h1>Referral Script</h1>
             <nav>
                 <ul class="top-menu mt-8 mb-8">
+                    <li class="mr-15"><a href="/" class="text-dark nav-button"><?= $texts['Home'] ?></a></li>
                     <?php if (Application::isGuest()): ?>
-                        <li class="mr-15"><a href="/" class="text-dark nav-button"><?= $texts['Home'] ?></a></li>
                         <li class="mr-15"><a href="/login" class="text-dark nav-button"><?= $texts['Login'] ?></a></li>
                         <li class="mr-15"><a href="register" class="text-dark nav-button"><?= $texts['Register'] ?></a></li>
                     <?php else: ?>
-                        <li class="mr-15"><a href="/" class="text-dark nav-button"><?= $texts['Home'] ?></a></li>
                         <li class="mr-15"><a href="/profile" class="text-dark nav-button"><?= $texts['Profile'] ?></a></li>
-                        <li class="mr-15"><a href="/contact" class="text-dark nav-button"><?= $texts['Contact'] ?></a></li>
                         <li class="mr-15"><a href="/logout" class="text-dark nav-button"><?= $texts['Logout'] ?></a></li>
                     <?php endif; ?>
                 </ul>
