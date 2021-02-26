@@ -43,11 +43,6 @@ $texts = Application::$app->language->getTexts();
                     </p>
             <?php endif; ?>
 
-            <?php if (!Application::isGuest() && !Application::$app->user->isVerified()): ?>
-                <p class="flash"><?=Application::$app->getText("Please click on the confirmation link we've sent you to your e-mail")?></p>
-            <?php endif; ?>
-
-
         </div>
     </header>
     <main class="pt-25 pb-25">

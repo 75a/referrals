@@ -72,7 +72,7 @@ class RefClick extends DbModel
 
     public function setReferralCode(String $referralCode): bool
     {
-        $user = (new User)->findOne(['referralCode' => $referralCode]);
+        $user = (new User)->findOne(['referral_code' => $referralCode]);
         if ($user){
             $this->refUser = $user;
             $this->refowner = $user->id;

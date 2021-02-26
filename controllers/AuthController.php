@@ -60,13 +60,6 @@ class AuthController extends Controller
             if (($userInputCSRF === CSRFProtector::getToken()) && $user->validate() && $user->save()){
                 $user->loadId();
 
-                $mailer = new Mailer();
-                $mailer->sendEmail(
-                    $user->email,
-                    "Confirm your registration",
-                    "Here's your verification code: {$user->verifyCode}"
-                ); // TEST!
-
                 Application::$app->login($user);
                 Application::$app->session->setFlash(
                     'success',
