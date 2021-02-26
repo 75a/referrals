@@ -71,7 +71,7 @@ class User extends UserModel
 
     public function getDisplayName(): string
     {
-        return "User";
+        return $this->email;
     }
 
     public function setReferralCode(): bool
