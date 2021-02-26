@@ -10,8 +10,10 @@ class RefClick extends DbModel
     public const REF_LENGTH = 8;
 
     public DbModel $refUser;
-    public int $refowner;
-    public string $ipofclicker;
+
+    public int $user_id;
+    public string $clicker_ip;
+
     public bool $isSaved = false;
 
     public static function generateNewReferralCode(): string
@@ -26,11 +28,11 @@ class RefClick extends DbModel
 
     public function save(): bool
     {
-        if ($this->refowner && $this->ipofclicker) {
+        if ($this->user_id && $this->clicker_ip) {
 
             $existingClick = (new RefClick)->findOne([
-                'refowner' => $this->refowner,
-                'ipofclicker' => $this->ipofclicker
+                'user_id' => $this->user_id,
+                'clicker_ip' => $this->clicker_ip
             ]);
             if (!$existingClick){
                 $this->isSaved = true;
@@ -50,8 +52,8 @@ class RefClick extends DbModel
     public function rules(): array
     {
         return [
-            'refowner' => [self::RULE_REQUIRED],
-            'ipofclicker' => [self::RULE_REQUIRED]
+            'user_id' => [self::RULE_REQUIRED],
+            'clicker_ip' => [self::RULE_REQUIRED]
         ];
     }
 
@@ -62,7 +64,7 @@ class RefClick extends DbModel
 
     public function attributes(): array
     {
-        return ['refowner','ipofclicker'];
+        return ['user_id','clicker_ip'];
     }
 
     public function primaryKey(): string
@@ -75,7 +77,7 @@ class RefClick extends DbModel
         $user = (new User)->findOne(['referral_code' => $referralCode]);
         if ($user){
             $this->refUser = $user;
-            $this->refowner = $user->id;
+            $this->user_id = $user->id;
             return true;
         }
         return false;
@@ -83,6 +85,6 @@ class RefClick extends DbModel
 
     public function setIP(String $ip): void
     {
-        $this->ipofclicker = $ip;
+        $this->clicker_ip = $ip;
     }
 }
