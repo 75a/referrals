@@ -22,7 +22,7 @@ class User extends UserModel
     public int $status = self::STATUS_INACTIVE;
     public string $password = '';
     public string $confirmPassword = '';
-    public string $referralCode = '';
+    public string $referral_code = '';
     public int $points = 0;
 
     public function tableName(): string
@@ -57,7 +57,7 @@ class User extends UserModel
 
     public function attributes(): array
     {
-        return ['email', 'password', 'status', 'referralCode', 'points'];
+        return ['email', 'password', 'status', 'referral_code', 'points'];
     }
 
     public function labels(): array
@@ -77,13 +77,13 @@ class User extends UserModel
     public function setReferralCode(): bool
     {
         $newReferralCode = RefClick::generateNewReferralCode();
-        $this->referralCode = $newReferralCode;
+        $this->referral_code = $newReferralCode;
         return true;
     }
 
     public function getReferralCode(): string
     {
-        return $this->referralCode;
+        return $this->referral_code;
     }
 
     public function addPoints(int $points)

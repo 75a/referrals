@@ -95,7 +95,7 @@ class AuthController extends Controller
         return $this->render('profile', [
             'email' => $user->email,
             'fullname' => $user->getDisplayName(),
-            'reflink' => $user->referralCode,
+            'reflink' => $user->referral_code,
             'points' => $user->points
         ]);
     }

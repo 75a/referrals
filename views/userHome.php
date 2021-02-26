@@ -5,7 +5,7 @@ use app\core\Application;
 
 $app = Application::$app;
 $this->title = $app->getText("Welcome to the home page!");
-$reflink = Config::getConfig()['reflinkURL'] . $app->user->referralCode;
+$reflink = Config::getConfig()['reflinkURL'] . $app->user->referral_code;
 ?>
 
 <h2 class="text-big"><?=$app->getText("Welcome")?>, <?=$userName?>! </h2>
