@@ -24,9 +24,6 @@ $app->language = new Polish();
 $app->router->get('/', [SiteController::class, 'home']);
 $app->router->get('/r', [ReferralController::class, 'refclick']);
 
-$app->router->get('/contact', [ContactController::class, 'contact']);
-$app->router->post('/contact', [ContactController::class, 'contact']);
-
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 
