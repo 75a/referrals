@@ -20,13 +20,14 @@ abstract class BaseField
     {
         return sprintf('
             <div class="form-group">
-                <label>%s</label>
+                <label for="%s" class="text-small">%s</label>
                 %s
                 <div class="invalid-feedback">
                     %s
                 </div>
             </div>
-        ', $this->model->getLabel($this->attribute),
+        ',  $this->attribute,
+            $this->model->getLabel($this->attribute),
             $this->renderInput(),
             $this->model->getFirstError($this->attribute),
         );

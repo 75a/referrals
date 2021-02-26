@@ -13,5 +13,5 @@ use app\core\CSRFProtector;
     <?php echo $form->field($model, 'email') ?>
     <?php echo $form->field($model, 'password')->passwordField() ?>
     <?php echo $form->field($model, 'confirmPassword')->passwordField() ?>
-    <button type="submit" class="btn btn-primary"><?=Application::$app->getText("Submit")?></button>
+    <button type="submit" class="btn"><?=Application::$app->getText("Submit")?></button>
 <?php \app\core\form\Form::end() ?>

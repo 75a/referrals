@@ -105,3 +105,27 @@ a {
     border: 1px solid #e3e3e3;
     min-height: 70vh;
 }
+
+.form-control {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    text-indent: 5px;
+}
+
+.btn {
+    padding: 5px 15px 5px 15px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid #aaaaaa;
+    background-color: #e3e3e3;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #d5d5d5;
+}
+
+
