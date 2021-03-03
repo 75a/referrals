@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\middlewares\LoggedInMiddleware;
+use app\core\views\builder\SingleLayoutYieldableViewBuilder;
 
 class ProfileController extends Controller
 {
@@ -15,15 +16,16 @@ class ProfileController extends Controller
         $this->registerMiddleware(new LoggedInMiddleware(['profile']));
     }
 
-    public function profile()
+    public function profile(): string
     {
         $user = Application::$app->user;
-        return $this->render('profile', [
+        $view = (new SingleLayoutYieldableViewBuilder())->get("profile", [
             'email' => $user->email,
             'fullname' => $user->getDisplayName(),
             'reflink' => $user->referral_code,
             'points' => $user->points
         ]);
+        return $view->getBuffer();
     }
 
 }
