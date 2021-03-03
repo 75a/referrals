@@ -9,10 +9,11 @@
     "autoload": {
         "psr-4": {
             "app\\": "./"
-        }
+        },
+        "files": ["Helpers.php"]
     },
     "require": {
         "vlucas/phpdotenv": "^5.2",
-      "ext-pdo": "*"
+        "ext-pdo": "*"
     }
 }
