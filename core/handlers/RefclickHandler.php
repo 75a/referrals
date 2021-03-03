@@ -36,7 +36,7 @@ class RefclickHandler
                 'user_id' => $newRef->user_id,
                 'clicker_ip' => $newRef->clicker_ip
             ]);
-            if ($existingRef === null) {
+            if ($existingRef === false) {
                 DbManager::add($newRef);
                 $user->addPoints(1);
                 DbManager::update($user);
