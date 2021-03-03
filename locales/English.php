@@ -6,14 +6,8 @@ use app\core\Language;
 
 class English extends Language
 {
-    public static array $texts;
-
-    public static function getTexts(): array
-    {
-        return [
-            "Status 0" => "Inactive",
-            "Status 1" => "Active",
-
-        ];
-    }
+    protected const LANGUAGE_CODE = "en";
+    protected const LANGUAGE_TRANSLATIONS = [
+        "English" => "English"
+    ];
 }
