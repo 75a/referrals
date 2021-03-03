@@ -6,51 +6,27 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
-use app\core\CSRFProtector;
-use app\core\exception\ReferralException;
+use app\core\exception\ReflinkException;
+use app\core\flash\ErrorFlash;
+use app\core\flash\SuccessFlash;
+use app\core\flash\WarningFlash;
+use app\core\handlers\RefclickHandler;
 use app\core\middlewares\LoggedInMiddleware;
-use app\core\Request;
-use app\core\Response;
-use app\models\ContactForm;
-use app\models\RefClick;
+use app\core\middlewares\ValidReflinkMiddleware;
 
 class ReferralController extends Controller
 {
-    public function refclick()
+    public function __construct()
     {
-        if ($this->isValidRefClick()) {
-            $newRef = new RefClick();
-            $newRef->setIP($_SERVER['REMOTE_ADDR']);
-            if ($newRef->setReferralCode($this->getReferralCode())){
-                $newRef->save();
-                if ($newRef->isSaved()){
-                    Application::$app->session->setFlash('info',Application::$app->getText('Someone just got points'));
-                } else {
-                    Application::$app->session->setFlash('info',Application::$app->getText('This referral link has already been used'));
-                }
-
-                return Application::$app->response->redirect('/');
-            }
-        }
-        Application::$app->session->setFlash('info',Application::$app->getText('This referral link is invalid'));
-        return Application::$app->response->redirect('/');
-
+        $this->registerMiddleware(new ValidReflinkMiddleware(['refclick']));
     }
 
-    private function isValidRefClick()
+    public function refclick(): void
     {
-        $refCode = Application::$app->request->getBody()['code'];
-        if ($refCode)
-        {
-            return RefClick::isValidReferralCode($refCode);
-        }
-        return false;
-    }
-
-    private function getReferralCode(): string
-    {
-        return Application::$app->request->getBody()['code'];
-
+        Application::$app->session->setFlash(
+            new SuccessFlash("You just gave someone points by clicking this referral link")
+        );
+        Application::$app->response->redirect('/');
     }
 
 }
