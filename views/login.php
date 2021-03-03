@@ -1,15 +1,14 @@
 <?php
-/** @var $model \app\models\User */
+/** @noinspection PhpUndefinedVariableInspection */
+use function app\_;
 
-use app\core\Application;
 use app\core\CSRFProtector;
-
 ?>
 
 <h2 class="text-big">Login</h2>
-<?php $form = \app\core\form\Form::begin('',"post") ?>
-    <?php echo $form->getCSRFField(CSRFProtector::getToken()) ?>
-    <?php echo $form->field($model, 'email') ?>
-    <?php echo $form->field($model, 'password')->passwordField() ?>
-    <button type="submit" class="btn"><?=Application::$app->getText("Submit")?></button>
-<?php \app\core\form\Form::end() ?>
+<form method="post">
+    <input type="hidden" name="<?=CSRFProtector::CSRF_KEY?>" value="<?=CSRFProtector::getToken()?>">
+    <input type="text" name="email" value="asdasd@123.com">
+    <input type="password" name="password" value="asdasd123">
+    <button type="submit" class="btn">Login</button>
+</form>
