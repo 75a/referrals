@@ -37,16 +37,25 @@ class AuthController extends Controller
         return (new SingleLayoutYieldableViewBuilder())->get("register")->getBuffer();
     }
 
-    public function login (Request $request, Response $response): void
+    public function login (Request $request, Response $response): ?string
     {
         $loginHandler = new LoginHandler($request->getBody());
         $loggedIn = $loginHandler->authenticate();
         if ($loggedIn) {
             Application::$app->session->setFlash(new SuccessFlash("Logged in successfully"));
             Application::$app->response->redirect('/');
-            return;
+            return null;
         }
-        $response->redirect('/');
+        $errors = $loginHandler->getValidationErrors();
+        $response->setStatusCode(403);
+        return (new SingleLayoutYieldableViewBuilder())->get("login", [
+            "isEmailError" => ($errors['email'] ?? ''),
+            "emailError" => $errors['email'] ?? '',
+            "emailOld" => $request->getBody()['email'] ?? '',
+
+            "isPasswordError" => ($errors['password'] ?? ''),
+            "passwordError" => $errors['password'] ?? '',
+        ])->getBuffer();
     }
 
     public function logout (Request $request, Response $response): void
@@ -72,15 +81,15 @@ class AuthController extends Controller
         $errors = $registerHandler->getValidationErrors();
         $response->setStatusCode(403);
         return (new SingleLayoutYieldableViewBuilder())->get("register", [
-            "isEmailError" => ($errors['email'] !== ''),
-            "emailError" => $errors['email'],
-            "emailOld" => $request->getBody()['email'],
+            "isEmailError" => ($errors['email'] ?? false),
+            "emailError" => $errors['email'] ?? '',
+            "emailOld" => $request->getBody()['email'] ?? '',
 
-            "isPasswordError" => ($errors['password'] !== ''),
-            "passwordError" => $errors['password'],
+            "isPasswordError" => ($errors['password'] ?? false),
+            "passwordError" => $errors['password'] ?? '',
 
-            "isPasswordConfirmationError" => ($errors['confirmPassword'] !== ''),
-            "passwordConfirmationError" => $errors['confirmPassword']
+            "isPasswordConfirmationError" => ($errors['confirmPassword'] ?? false),
+            "passwordConfirmationError" => $errors['confirmPassword'] ?? ''
         ])->getBuffer();
     }
 

@@ -14,6 +14,7 @@ class LoginHandler
     private string $email;
     private string $password;
     private string $inputCsrf;
+    private array $validationErrors;
 
     public function __construct(array $userInputBody)
     {
@@ -36,11 +37,18 @@ class LoginHandler
     {
         $user = DbManager::findOne(User::class, ['email' => $email]);
         if (!$user) {
+            $this->validationErrors['email'] = 'This e-mail is not registered';
             return false;
         }
         if (!password_verify($password, $user->password)) {
+            $this->validationErrors['password'] = 'Invalid password provided';
             return false;
         }
         return Application::$app->login($user);
+    }
+
+    public function getValidationErrors(): array
+    {
+        return $this->validationErrors;
     }
 }
