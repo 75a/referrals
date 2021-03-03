@@ -1,131 +1,151 @@
-* {
-    padding: 0;
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
+/* Global */
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-a {
-    text-decoration: none;
-}
+    a {
+        text-decoration: none;
+    }
 
+/* Containers */
+    .container {
+        width: 90%;
+        margin: auto;
+    }
 
+    .flash {
+        margin-top: 8px;
+        padding: 5px 5px 5px 15px;
+        border-radius: 5px;
+        background-color: #e7dada;
+    }
 
-.container {
-    width: 90%;
-    margin: auto;
-}
+    .main-footer {
+        padding: 30px 10px 30px 10px;
+    }
 
-.top-menu li {
-    display: inline;
-}
+    .main-content {
+        padding: 15px 15px 15px 15px;
+        border: 1px solid #e3e3e3;
+        min-height: 70vh;
+    }
 
-.pt-15 {
-    padding-top: 15px;
-}
+/* Navigation */
+    .top-menu li {
+        display: inline;
+    }
 
-.pb-15 {
-    padding-bottom: 15px;
-}
+    .nav-button {
+        padding: 3px 15px 3px 15px;
+        background-color: #eaeaea;
+        border-radius: 5px;
+    }
 
-.pt-25 {
-    padding-top: 25px;
-}
+    .nav-button:hover {
+        background-color: #dedcdc;
+    }
 
-.pb-25 {
-    padding-bottom: 25px;
-}
+/* Form controls */
+    .form-control {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 5px;
+        text-indent: 5px;
+    }
 
-.mr-15 {
-    margin-right: 15px;
-}
+    .btn {
+        padding: 5px 15px 5px 15px;
+        border-radius: 3px;
+        outline: none;
+        border: 1px solid #aaaaaa;
+        background-color: #e3e3e3;
+        cursor: pointer;
+    }
 
-.mt-8 {
-    margin-top: 8px;
-}
+    .btn:hover {
+        background-color: #d5d5d5;
+    }
 
-.mb-8 {
-    margin-bottom: 8px;
-}
+/* Flash messages */
+    .flash-success {
+        background-color: #8ccd8c;
+    }
 
-.bg-dirtywhite {
-    background-color: #fcfcfc;
-}
+    .flash-warning {
+        background-color: #cdc48c;
+    }
 
-.bg-dark {
-    background-color: #282828;
-}
+    .flash-error {
+        background-color: #cd8c8c;
+    }
 
-.bborder-1-brightgray {
-    border-bottom: 1px solid #e3e3e3;
-}
+/* Padding */
+    .pt-15 {
+        padding-top: 15px;
+    }
 
-.text-bold {
-    font-weight: bold;
-}
+    .pb-15 {
+        padding-bottom: 15px;
+    }
 
-.text-small {
-    font-size: 12px;
-}
+    .pt-25 {
+        padding-top: 25px;
+    }
 
-.text-big {
-    font-size: 32px;
-}
+    .pb-25 {
+        padding-bottom: 25px;
+    }
 
-.text-bright {
-    color: #e3e3e3;
-}
+/* Margin */
+    .mr-15 {
+        margin-right: 15px;
+    }
 
-.text-dark {
-    color: #313131;
-}
+    .mt-8 {
+        margin-top: 8px;
+    }
 
-.nav-button {
-    padding: 3px 15px 3px 15px;
-    background-color: #eaeaea;
-    border-radius: 5px;
-}
+    .mb-8 {
+        margin-bottom: 8px;
+    }
 
-.nav-button:hover {
-    background-color: #dedcdc;
-}
+/* Background colors */
+    .bg-dirtywhite {
+        background-color: #fcfcfc;
+    }
 
-.flash {
-    margin-top: 8px;
-    padding: 5px 5px 5px 15px;
-    border-radius: 5px;
-    background-color: #e7dada;
-}
+    .bg-dark {
+        background-color: #282828;
+    }
 
-.main-footer {
-    padding: 30px 10px 30px 10px;
-}
+/* Text colors */
+    .text-bright {
+        color: #e3e3e3;
+    }
 
-.main-content {
-    padding: 15px 15px 15px 15px;
-    border: 1px solid #e3e3e3;
-    min-height: 70vh;
-}
+    .text-dark {
+        color: #313131;
+    }
 
-.form-control {
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 5px;
-    text-indent: 5px;
-}
+/* Text sizes */
+    .text-small {
+        font-size: 12px;
+    }
 
-.btn {
-    padding: 5px 15px 5px 15px;
-    border-radius: 3px;
-    outline: none;
-    border: 1px solid #aaaaaa;
-    background-color: #e3e3e3;
-    cursor: pointer;
-}
+    .text-big {
+        font-size: 32px;
+    }
 
-.btn:hover {
-    background-color: #d5d5d5;
-}
+/* Text effects */
+    .text-bold {
+        font-weight: bold;
+    }
 
-
+/* Borders */
+    .bborder-1-brightgray {
+        border-bottom: 1px solid #e3e3e3;
+    }
