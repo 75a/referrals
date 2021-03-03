@@ -1,7 +1,6 @@
 <?php
 /** @noinspection PhpUndefinedVariableInspection */
 use function app\_;
-
 use app\core\CSRFProtector;
 ?>
 
