@@ -21,9 +21,27 @@ class Router
     {
         $this->routes['get'][$path] = $callback;
     }
+
     public function post($path, $callback): void
     {
         $this->routes['post'][$path] = $callback;
+    }
+
+    public function onError(int $errorCode, $callback): void
+    {
+        $this->routes['error']["error " . $errorCode] = $callback;
+    }
+
+    public function onErrors(array $errorCodes, $callback): void
+    {
+        foreach ($errorCodes as $errorCode) {
+            $this->routes['error']["error " . $errorCode] = $callback;
+        }
+    }
+
+    public function onErrorDefault($callback): void
+    {
+        $this->routes['error']["default"] = $callback;
     }
 
     public function resolve(): ?string
@@ -34,9 +52,18 @@ class Router
         if ($callback === false) {
             throw new NotFoundException();
         }
-        if (is_string($callback)){
-            return Application::$app->view->renderView($callback);
-        }
+        return $this->finalResolve($callback);
+    }
+
+    public function resolveError(\Exception $e): ?string
+    {
+        $callback = $this->routes["error"]["error " . $e->getCode()] ?? $callback = $this->routes["error"]["default"];
+        $this->response->message = $e->getMessage();
+        return $this->finalResolve($callback);
+    }
+
+    private function finalResolve($callback): ?string
+    {
         if (is_array($callback)){
             /** @var Controller $controller */
             $controller = new $callback[0]();
@@ -48,8 +75,9 @@ class Router
             foreach ($controller->getMiddlewares() as $middleware){
                 $middleware->execute();
             }
-
         }
         return call_user_func($callback, $this->request, $this->response);
     }
+
+
 }
