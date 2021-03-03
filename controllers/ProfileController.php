@@ -21,7 +21,6 @@ class ProfileController extends Controller
         $user = Application::$app->user;
         $view = (new SingleLayoutYieldableViewBuilder())->get("profile", [
             'email' => $user->email,
-            'fullname' => $user->getDisplayName(),
             'reflink' => $user->referral_code,
             'points' => $user->points
         ]);
