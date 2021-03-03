@@ -7,96 +7,73 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\CSRFProtector;
+use app\core\flash\ErrorFlash;
+use app\core\flash\SuccessFlash;
+use app\core\handlers\LoginHandler;
+use app\core\handlers\RegisterHandler;
 use app\core\middlewares\LoggedInMiddleware;
 use app\core\middlewares\GuestMiddleware;
 use app\core\Request;
 use app\core\Response;
-use app\models\LoginForm;
-use app\models\User;
+use app\core\views\builder\SingleLayoutYieldableViewBuilder;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
         $this->registerMiddleware(new LoggedInMiddleware(['logout']));
-        $this->registerMiddleware(new GuestMiddleware(['register', 'login']));
+        $this->registerMiddleware(new GuestMiddleware(['showRegister', 'showLogin']));
     }
 
-    public function login (Request $request, Response $response)
+    public function showLogin(): string
     {
-        $loginForm = new LoginForm();
-        CSRFProtector::setTokenIfNotExist();
-        if ($request->isPost()){
-
-            $inputBody = $request->getBody();
-            $loginForm->loadData($inputBody);
-            $userInputCSRF = $inputBody[CSRFProtector::CSRF_KEY];
-            if (($userInputCSRF === CSRFProtector::getToken()) && $loginForm->validate() && $loginForm->login() ){
-                Application::$app->session->setFlash(
-                    'info',
-                    Application::$app->getText('Logged in successfully!')
-                );
-                CSRFProtector::removeToken();
-                return $response->redirect('/');
-
-            }
-        }
-
-        $this->setLayout('main');
-        return $this->render('login', [
-            'model' => $loginForm
-        ]);
+        CSRFProtector::setTokenIfNotExists();
+        return (new SingleLayoutYieldableViewBuilder())->get("login")->getBuffer();
     }
 
-    public function register(Request $request)
+    public function showRegister(): string
     {
-        $user = new User();
-        CSRFProtector::setTokenIfNotExist();
-        if ($request->isPost()){
-            $inputBody = $request->getBody();
-            $user->loadData($inputBody);
-            $userInputCSRF = $inputBody[CSRFProtector::CSRF_KEY];
-            if (($userInputCSRF === CSRFProtector::getToken()) && $user->validate() && $user->save()){
-                $user->loadId();
-
-                Application::$app->login($user);
-                Application::$app->session->setFlash(
-                    'success',
-                    Application::$app->getText('Thanks for registering')
-                );
-                CSRFProtector::removeToken();
-                return Application::$app->response->redirect('/');
-            }
-
-            return $this->render('register', [
-                'model' => $user
-            ]);
-        }
-        $this->setLayout('main');
-        return $this->render('register', [
-            'model' => $user
-        ]);
+        CSRFProtector::setTokenIfNotExists();
+        return (new SingleLayoutYieldableViewBuilder())->get("register")->getBuffer();
     }
 
-    public function logout (Request $request, Response $response)
+    public function login (Request $request, Response $response): void
+    {
+        $loginHandler = new LoginHandler($request->getBody());
+        $loggedIn = $loginHandler->authenticate();
+        if ($loggedIn) {
+            Application::$app->session->setFlash(new SuccessFlash("Logged in successfully"));
+            Application::$app->response->redirect('/');
+            return;
+        }
+        $response->redirect('/');
+    }
+
+    public function logout (Request $request, Response $response): void
     {
         Application::$app->logout();
         Application::$app->session->setFlash(
-            'info',
-            Application::$app->getText('You have been logged out')
+            new SuccessFlash("You have been logged out")
         );
         $response->redirect('/');
     }
 
-    public function profile()
+    public function register(Request $request, Response $response): ?string
     {
-        $user = Application::$app->user;
-        return $this->render('profile', [
-            'email' => $user->email,
-            'fullname' => $user->getDisplayName(),
-            'reflink' => $user->referral_code,
-            'points' => $user->points
-        ]);
+        $registerHandler = new RegisterHandler($request->getBody());
+        if ($registerHandler->registerUser()) {
+            Application::$app->session->setFlash(
+                new SuccessFlash("Logged in successfully")
+            );
+            $response->redirect('/');
+            return null;
+        }
+
+
+        return (new SingleLayoutYieldableViewBuilder())->get("register", [
+            "isEmailError" => ($registerHandler->getValidationErrors()['email'] !== ''),
+            "emailError" => $registerHandler->getValidationErrors()['email']
+        ])->getBuffer();
     }
 
 }
