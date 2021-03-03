@@ -9,13 +9,13 @@ use app\core\CSRFProtector;
     <input type="hidden" name="<?=CSRFProtector::CSRF_KEY?>" value="<?=CSRFProtector::getToken()?>">
 
     <?php if ($isEmailError ?? false): ?>
-        <input type="text" name="email" value="" class="input-error" placeholder="<?=$emailError?>">
+        <input type="text" class="form-control input-error" name="email" placeholder="<?=$emailError?>">
     <?php else: ?>
-        <input type="text" name="email" value="">
+        <input type="text" class="form-control" name="email" placeholder="E-mail">
     <?php endif; ?>
 
-    <input type="password" name="password" value="">
-    <input type="password" name="confirmPassword" value="">
+    <input type="password" class="form-control" name="password" placeholder="Password">
+    <input type="password" class="form-control" name="confirmPassword" placeholder="Repeat password">
     <button type="submit" class="btn">Register</button>
 </form>
 
