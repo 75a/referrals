@@ -2,6 +2,9 @@
 
 namespace app\core;
 
+use app\core\flash\Flash;
+use app\core\flash\SuccessFlash;
+
 class Session
 {
     protected const FLASH_KEY = 'flash_messages';
@@ -9,29 +12,32 @@ class Session
     public function __construct()
     {
         session_start();
-        $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
-        foreach ($flashMessages as $key => &$flashMessage){
-            $flashMessage['remove'] = true;
+        if (ISSET($_SESSION[self::FLASH_KEY])) {
+            $_SESSION[self::FLASH_KEY]->setFlashToBeRemoved();
         }
-        $_SESSION[self::FLASH_KEY]  = $flashMessages;
     }
 
     public function __destruct()
     {
-        $this->removeFlashMessages();
+        echo(http_response_code());
+        if (ISSET($_SESSION[self::FLASH_KEY]) && $_SESSION[self::FLASH_KEY]->shouldBeRemoved()) {
+            $_SESSION[self::FLASH_KEY] = null;
+        }
     }
 
-    public function setFlash($key, $message): void
+    public function setFlash(Flash $flash): void
     {
-        $_SESSION[self::FLASH_KEY][$key] = [
-            'remove' => false,
-            'value' => $message
-        ];
+        $_SESSION[self::FLASH_KEY] = $flash;
     }
 
-    public function getFlash ($key): string
+    public function isFlashSet(): bool
     {
-        return $_SESSION[self::FLASH_KEY][$key]['value'] ?? "";
+        return ISSET($_SESSION[self::FLASH_KEY]);
+    }
+
+    public function getFlash(): ?Flash
+    {
+        return $_SESSION[self::FLASH_KEY] ?? null;
     }
 
     public function set($key, $value): void
@@ -47,18 +53,6 @@ class Session
     public function remove($key): void
     {
         unset($_SESSION[$key]);
-    }
-
-    private function removeFlashMessages(): void
-    {
-        $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
-        foreach ($flashMessages as $key => $flashMessage) {
-            if ($flashMessage['remove']) {
-                unset($flashMessages[$key]);
-            }
-        }
-
-        $_SESSION[self::FLASH_KEY] = $flashMessages;
     }
 
 }
