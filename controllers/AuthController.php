@@ -69,11 +69,18 @@ class AuthController extends Controller
             return null;
         }
 
-
+        $errors = $registerHandler->getValidationErrors();
+        $response->setStatusCode(403);
         return (new SingleLayoutYieldableViewBuilder())->get("register", [
-            "isEmailError" => ($registerHandler->getValidationErrors()['email'] !== ''),
-            "emailError" => $registerHandler->getValidationErrors()['email'],
-            "emailOld" => $request->getBody()['email']
+            "isEmailError" => ($errors['email'] !== ''),
+            "emailError" => $errors['email'],
+            "emailOld" => $request->getBody()['email'],
+
+            "isPasswordError" => ($errors['password'] !== ''),
+            "passwordError" => $errors['password'],
+
+            "isPasswordConfirmationError" => ($errors['confirmPassword'] !== ''),
+            "passwordConfirmationError" => $errors['confirmPassword']
         ])->getBuffer();
     }
 

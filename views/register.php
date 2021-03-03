@@ -16,8 +16,19 @@ use app\core\CSRFProtector;
         <input type="text" class="form-control" name="email" placeholder="E-mail">
     <?php endif; ?>
 
-    <input type="password" class="form-control" name="password" placeholder="Password">
-    <input type="password" class="form-control" name="confirmPassword" placeholder="Repeat password">
+    <?php if ($isPasswordError ?? false): ?>
+        <label for="password" class="text-small text-red text-bold"><?=$passwordError?></label>
+        <input type="password" class="form-control input-error" name="password" id="password" placeholder="Password">
+    <?php else: ?>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+    <?php endif; ?>
+
+    <?php if ($isPasswordConfirmationError ?? false): ?>
+        <label for="confirmPassword" class="text-small text-red text-bold"><?=$passwordConfirmationError?></label>
+        <input type="password" class="form-control input-error" name="confirmPassword" id="confirmPassword" placeholder="Repeat password">
+    <?php else: ?>
+        <input type="password" class="form-control" name="confirmPassword"  id="confirmPassword" placeholder="Repeat password">
+    <?php endif; ?>
     <button type="submit" class="btn">Register</button>
 </form>
 
