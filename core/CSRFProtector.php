@@ -12,7 +12,7 @@ class CSRFProtector
         return Application::$app->session->get(self::CSRF_KEY);
     }
 
-    public static function setTokenIfNotExist(): void
+    public static function setTokenIfNotExists(): void
     {
         if (!self::getToken()){
             Application::$app->session->set(self::CSRF_KEY, Utils::getRandomString(self::CSRF_KEY_LENGTH));
@@ -22,5 +22,11 @@ class CSRFProtector
     public static function removeToken(): void
     {
         Application::$app->session->remove(self::CSRF_KEY);
+    }
+
+
+    public static function isValid(string $userCsrf): bool
+    {
+        return ($userCsrf === self::getToken());
     }
 }
