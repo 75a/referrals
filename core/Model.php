@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\db\DbManager;
+
 abstract class Model
 {
     public const RULE_REQUIRED = 'required';
@@ -11,9 +13,44 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
 
-    abstract public function rules(): array;
-
     public array $errors = [];
+
+    public const TABLE_NAME = "";
+    public const PRIMARY_KEY = "";
+    public const ATTRIBUTES = [];
+    public const RULES = [];
+    public const LABELS = [];
+
+    public function getLabel($attribute): string
+    {
+        return $this->labels()[$attribute] ?? $attribute;
+    }
+
+    public static function tableName(): string
+    {
+        return static::TABLE_NAME;
+    }
+
+    public static function primaryKey(): string
+    {
+        return static::PRIMARY_KEY;
+    }
+
+    public static function attributes(): array
+    {
+        return static::ATTRIBUTES;
+    }
+
+    public static function rules(): array
+    {
+        return static::RULES;
+    }
+
+    public static function labels(): array
+    {
+        return static::LABELS;
+    }
+
 
     public function loadData($data): void
     {
@@ -22,16 +59,6 @@ abstract class Model
                 $this->{$key} = $value;
             }
         }
-    }
-
-    public function labels(): array
-    {
-        return [];
-    }
-
-    public function getLabel($attribute): string
-    {
-        return $this->labels()[$attribute] ?? $attribute;
     }
 
     public function validate(): bool
@@ -62,14 +89,8 @@ abstract class Model
                 if ($ruleName === self::RULE_UNIQUE) {
                     $className = $rule['class'];
                     $uniqueAttr = $attribute = $rule['attribute'] ?? $attribute;
-                    $tableName = $className::tableName();
-
-                    $statement = Application::$app->db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
-                    $statement->bindValue(":attr", $value);
-                    $statement->execute();
-
-                    $record = $statement->fetchObject();
-                    if ($record) {
+                    $foundRecord = DbManager::findOne($className, [$uniqueAttr => $value]);
+                    if ($foundRecord) {
                         $this->addErrorForRule($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
                     }
                 }
@@ -86,12 +107,12 @@ abstract class Model
     public function errorMessages(): array
     {
         return [
-            self::RULE_REQUIRED => Application::$app->getText('This field is required'),
-            self::RULE_EMAIL => Application::$app->getText('This field must be valid email address'),
-            self::RULE_MIN => Application::$app->getText('Min length of this field must be {min}'),
-            self::RULE_MAX => Application::$app->getText('Max length of this field must be {max}'),
-            self::RULE_MATCH => Application::$app->getText('This field must be the same as {match}'),
-            self::RULE_UNIQUE => Application::$app->getText('Record with this {field} already exists'),
+            self::RULE_REQUIRED => 'This field is required',
+            self::RULE_EMAIL => 'This field must be valid email address',
+            self::RULE_MIN => 'Min length of this field must be {min}',
+            self::RULE_MAX => 'Max length of this field must be {max}',
+            self::RULE_MATCH => 'This field must be the same as {match}',
+            self::RULE_UNIQUE => 'Record with this {field} already exists',
         ];
     }
 
