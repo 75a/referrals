@@ -57,6 +57,10 @@
         text-indent: 5px;
     }
 
+    .input-error {
+        background-color: #ceaaaa;
+    }
+
     .btn {
         padding: 5px 15px 5px 15px;
         border-radius: 3px;
@@ -130,6 +134,11 @@
     .text-dark {
         color: #313131;
     }
+
+    .text-red {
+        color: #780e0e;
+    }
+
 
 /* Text sizes */
     .text-small {
