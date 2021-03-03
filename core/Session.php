@@ -19,7 +19,6 @@ class Session
 
     public function __destruct()
     {
-        echo(http_response_code());
         if (ISSET($_SESSION[self::FLASH_KEY]) && $_SESSION[self::FLASH_KEY]->shouldBeRemoved()) {
             $_SESSION[self::FLASH_KEY] = null;
         }
