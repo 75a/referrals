@@ -72,7 +72,8 @@ class AuthController extends Controller
 
         return (new SingleLayoutYieldableViewBuilder())->get("register", [
             "isEmailError" => ($registerHandler->getValidationErrors()['email'] !== ''),
-            "emailError" => $registerHandler->getValidationErrors()['email']
+            "emailError" => $registerHandler->getValidationErrors()['email'],
+            "emailOld" => $request->getBody()['email']
         ])->getBuffer();
     }
 
