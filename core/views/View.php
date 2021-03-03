@@ -1,8 +1,11 @@
 <?php
 
 
-namespace app\core;
+namespace app\core\views;
 
+
+use app\core\Application;
+use app\core\views\feeder\IViewFeeder;
 
 class View
 {
@@ -14,12 +17,23 @@ class View
     {
         $this->viewFileName = $viewFileName;
         $this->params = $params;
-        $this->loadView();
     }
 
-    public function yield(View $view, string $spot): void
+    public function yieldViewAs(View $view, string $as): void
     {
-        $this->buffer = str_replace("{{{$spot}}}", $view->getBuffer(), $this->buffer);
+        $this->buffer = str_replace("{{{$as}}}", $view->getBuffer(), $this->buffer);
+    }
+
+    public function feed(IViewFeeder $viewFeeder)
+    {
+        $this->addParams($viewFeeder->getFeed());
+    }
+
+    public function addParams(array $params = [])
+    {
+        foreach ($params as $key => $value) {
+            $this->params[$key] = $value;
+        }
     }
 
     public function getBuffer(): string
@@ -27,7 +41,7 @@ class View
         return $this->buffer;
     }
 
-    private function loadView(): void
+    public function loadView(): void
     {
         foreach ($this->params as $key => $value) {
             $$key = $value;
