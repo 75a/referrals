@@ -3,14 +3,14 @@
 namespace app\core;
 
 use app\core\db\Database;
-use app\core\db\DbModel;
+use app\core\db\DbManager;
+use app\models\User;
 
 class Application
 {
     public static string $ROOT_DIR;
 
     public string $layout = 'main';
-    public string $userClass;
     public Language $language;
 
     public Router $router;
@@ -18,30 +18,26 @@ class Application
     public Response $response;
     public Session $session;
     public Database $db;
-    public ?UserModel $user;
-    public View $view;
+    public ?User $user;
 
     public static Application $app;
     public ?Controller $controller = null;
 
     public function __construct($rootPath, array $config)
     {
-        $this->userClass = $config['userClass'];
-
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
         $this->request = new Request();
         $this->response = new Response();
         $this->session = new Session();
         $this->router = new Router($this->request, $this->response);
-        $this->view = new View();
 
         $this->db = new Database($config['db']);
 
         $primaryValue = $this->session->get('user');
         if ($primaryValue !== ""){
-            $primaryKey = (new $this->userClass)->primaryKey();
-            $this->user = (new $this->userClass)->findOne([$primaryKey => $primaryValue]);
+            $primaryKey = (new User())->primaryKey();
+            $this->user = DbManager::findOne(User::class, [$primaryKey => $primaryValue]);
         } else {
             $this->user = null;
         }
@@ -52,35 +48,16 @@ class Application
         try {
             echo $this->router->resolve();
         } catch (\Exception $e) {
+            $httpCode = 404;
             if (is_int($e->getCode())) {
-                $this->response->setStatusCode($e->getCode());
-            } else {
-                $this->response->setStatusCode(404);
+                $httpCode = $e->getCode();
             }
-
-            echo $this->view->renderView('_error',[
-                'exception' => $e
-            ]);
+            $this->response->setStatusCode($httpCode);
+            echo $this->router->resolveError($e);
         }
     }
 
-    /**
-     * @return Controller
-     */
-    public function getController(): Controller
-    {
-        return $this->controller;
-    }
-
-    /**
-     * @param Controller $controller
-     */
-    public function setController(Controller $controller): void
-    {
-        $this->controller = $controller;
-    }
-
-    public function login(UserModel $user): bool
+    public function login(User $user): bool
     {
         $this->user = $user;
         $primaryKey = $user->primaryKey();
@@ -99,10 +76,4 @@ class Application
     {
         return !self::$app->user;
     }
-
-    public function getText(string $key): string
-    {
-        return $this->language::translate($key);
-    }
-
 }
